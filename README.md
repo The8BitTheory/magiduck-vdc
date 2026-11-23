@@ -1,0 +1,47 @@
+# magiduck-vdc
+
+Experiments for a port of [MagiDuck](https://github.com/bluepandion/magiduck) (DOS, CGA, Toni Svenström 2015, freeware)
+to the Commodore 128 VDC, written in BASIC 7.0 with [VDC-BASIC](https://github.com/the8bittheory/vdc-basic) (branch v2h)
+and compiled with Blitz! 128.
+
+## Prototype
+
+- Bitmap mode with attributes, 40 columns with double pixels, 50 rows of 4 scanlines:
+  one attribute byte = 2 pixels, the same layout as the CGA original (80x50 pixels, 16 colours).
+  A text mode variant (80x50, one attribute byte per pixel) is still supported by the tools.
+- Level 1 from the original data, tile Ring Buffer in VRAM, Double Buffering with Page Flip,
+  sprites with transparency (VMS), one VCL list per page and frame.
+- Joystick port 2: left/right walk, fire or up jumps. No enemy contact, shooting or HUD yet.
+
+Playable disk: `proto/magiduck-demo.d64` (C128, 80 columns, 64 KiB VRAM): `RUN"MAGIDUCK"`.
+
+Measured in VICE (Blitz! compiled, level 1, duck + 4 enemies): about 7 fps.
+
+## Files
+
+| Path | Content |
+|---|---|
+| `tools/mdgfx.py` | readers for the packed MagiDuck files (LEVELS.CLP, TILES.CTP, *.CSP, *.CSD) |
+| `tools/make_proto.py` | converter: level, tiles, sprites, VMS and VCL lists (text or bitmap mode) |
+| `proto/mdload.bas` | loader (interpreted): video mode, data to VRAM and RAM, starts the game |
+| `proto/mdgame.bas` | game loop (Blitz! compatible, extension commands with `::`) |
+| `tools/run_proto.sh` | benchmark: build, compile, run headless in x128, exit code = fps x 10 |
+| `tools/make_demo_disk.sh` | builds `proto/magiduck-demo.d64` |
+| `tools/mkprof.py` | profiling variant of the game loop (time per section) |
+| `tools/blitzcomp.sh` | compiles with the original Blitz! 128 headless in x128 |
+| `proto/bench/` | earlier measurements (statement costs, text vs. bitmap mode) |
+
+## Requirements
+
+- VICE 3.x (`x128`, `c1541`), Python 3 with Pillow.
+- The `RELEASE` folder of github.com/bluepandion/magiduck: `export RELEASE=<path>/magiduck/RELEASE`.
+- Blitz! 128: not included. Copy `blitz!.128.prg` (fixed build) from
+  [blitz-compiler](https://github.com/the8bittheory/blitz-compiler) (`blitz128/fixed/`) to `tools/blitz/`,
+  or set `BLITZ=<path>`.
+
+```
+tools/run_proto.sh blitz 1 bitmap     # benchmark
+tools/make_demo_disk.sh 1             # playable disk
+```
+
+MagiDuck, its assets and source code are freeware by Toni Svenström.
