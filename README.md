@@ -13,7 +13,7 @@ and compiled with Blitz! 128.
   sprites with transparency (VMS), one VCL list per page and frame.
 - Joystick port 2: left/right walk, fire or up jumps. No enemy contact, shooting or HUD yet.
 
-Playable disk: `proto/magiduck-demo.d64` (C128, 80 columns, 64 KiB VRAM): `RUN"MAGIDUCK"`.
+Playable disk: `proto/magiduck-demo.d81` (C128, 80 columns, 64 KiB VRAM): `RUN"MAGIDUCK"`.
 
 Measured in VICE (Blitz! compiled, level 1, duck + 4 enemies): about 7 fps.
 
@@ -26,7 +26,7 @@ Measured in VICE (Blitz! compiled, level 1, duck + 4 enemies): about 7 fps.
 | `proto/mdload.bas` | loader (interpreted): video mode, data to VRAM and RAM, starts the game |
 | `proto/mdgame.bas` | game loop (Blitz! compatible, extension commands with `::`) |
 | `tools/run_proto.sh` | benchmark: build, compile, run headless in x128, exit code = fps x 10 |
-| `tools/make_demo_disk.sh` | builds `proto/magiduck-demo.d64` |
+| `tools/make_demo_disk.sh` | builds `proto/magiduck-demo.d81` |
 | `tools/mkprof.py` | profiling variant of the game loop (time per section) |
 | `tools/blitzcomp.sh` | compiles with the original Blitz! 128 headless in x128 |
 | `proto/bench/` | earlier measurements (statement costs, text vs. bitmap mode) |

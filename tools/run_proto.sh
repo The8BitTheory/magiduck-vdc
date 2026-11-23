@@ -19,11 +19,11 @@ else
     grep -q "errors: 0" $W/blitz/screen.txt || { cat $W/blitz/screen.txt; exit 2; }
     cp $W/blitz/c.prg $W/mdgame; cp $W/blitz/screen.txt $O/blitz-compile.txt
 fi
-c1541 -format "md,01" d64 $W/t.d64 -write $P/vdcbasic2h vdcbasic2h -write $W/mdvram mdvram \
+c1541 -format "md,01" d81 $W/t.d81 -write $W/mdload.prg mdload -write $P/vdcbasic2h vdcbasic2h -write $W/mdvram mdvram \
       -write $W/mddata mddata -write $W/mdrows mdrows -write $W/mdgame mdgame >/dev/null
 set +e
-x128 -default -warp -sounddev dummy -debugcart -80col -VDC64KB +drive8truedrive -trapdevice8 -8 $W/t.d64 \
-     -autostartprgmode 1 -autostart $W/mdload.prg -limitcycles ${LIMIT:-400000000} \
+x128 -default -warp -sounddev dummy -debugcart -80col -VDC64KB -drive8type 1581 -8 $W/t.d81 \
+     -autostartprgmode 1 -autostart $W/t.d81 -limitcycles ${LIMIT:-400000000} \
      -exitscreenshot $O/$MODE-$GFX.png > $O/$MODE-$GFX.log 2>&1
 rc=$?
 python3 -I -c 'import sys; from PIL import Image; i=Image.open(sys.argv[1]); i.resize((i.width, i.height*2), Image.NEAREST).save(sys.argv[1])' $O/$MODE-$GFX.png
