@@ -15,7 +15,8 @@ and compiled with Blitz! 128.
 
 Playable disk: `proto/magiduck-demo.d81` (C128, 80 columns, 64 KiB VRAM): `RUN"MAGIDUCK"`.
 
-Measured in VICE (Blitz! compiled, level 1, duck + 4 enemies): about 7 fps.
+Measured in VICE (level 1, duck + 4 enemies, automatic input, 300 frames): 7.1 fps with the original
+Blitz! runtime, 7.8 fps with the Improved 2026 runtime (blitz-compiler, branch `perf`). The demo disk uses the improved runtime with fast math.
 
 ## Files
 
@@ -42,6 +43,14 @@ Measured in VICE (Blitz! compiled, level 1, duck + 4 enemies): about 7 fps.
 ```
 tools/run_proto.sh blitz 1 bitmap     # benchmark
 tools/make_demo_disk.sh 1             # playable disk
+```
+
+With the JS compiler of blitz-compiler (needed for the Improved 2026 runtime):
+
+```
+export BLITZC=<blitz-compiler>/blitz128/blitzc NODE=<path to node>
+RUNTIME=improved FASTMATH=on tools/run_proto.sh blitz 1 bitmap
+RUNTIME=improved FASTMATH=on tools/make_demo_disk.sh 1
 ```
 
 MagiDuck, its assets and source code are freeware by Toni Svenström.

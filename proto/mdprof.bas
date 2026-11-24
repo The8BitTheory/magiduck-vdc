@@ -3,9 +3,9 @@
 2 rem bank 0: frame lists 3072/3200, data 32768, row lists 40960/57344
 10 dim m%(1599),yt%(639),xt%(79),ya%(50),sl%(11),sh%(11),ll%(11),lh%(11),fx%(11),fy%(11),mx%(11),my%(11)
 11 dim ex%(3),ey%(3),ed%(3),ef%(3),of%(9),sq%(9),wx%(1),wy%(1)
-20 fl%=3072:db=32768:dm%=1:nf%=300:dd%=-1
+20 fl%=3072:db=32768:nf%=300:dd%=-1
 30 bank 0
-31 px%=peek(db)+256*peek(db+1):py%=peek(db+2)+256*peek(db+3):n%=peek(db+4)
+31 dm%=peek(db+31):px%=peek(db)+256*peek(db+1):py%=peek(db+2)+256*peek(db+3):n%=peek(db+4)
 32 for i=0 to n%-1:a=db+5+i*4:ex%(i)=peek(a)+256*peek(a+1):ey%(i)=peek(a+2)+256*peek(a+3):ed%(i)=1:next
 33 xs%=peek(db+33):sw%=peek(db+34):rs%=peek(db+35)+256*peek(db+36):p0%=peek(db+37)+256*peek(db+38)
 34 p1%=peek(db+39)+256*peek(db+40):rb%=peek(db+41)+256*peek(db+42):cm%=peek(db+43)+256*peek(db+44):hw%=sw%/2

@@ -2,7 +2,10 @@
 # Build and run the 80x50 prototype headless in x128.
 # usage: tools/run_proto.sh interp|blitz [level] [text|bitmap]   (GAME=name: other .bas in proto/)
 # Exit code of the program = frames per second x 10 (debug cartridge).
-# Screenshot of the last frame: proto/out/<mode>.png
+# Screenshot of the last frame: proto/out/<mode>-<gfx>.png
+# Compiler for blitz: original Blitz! 128 in x128 (default), or the JS re-implementation
+# (BLITZC=<blitz-compiler>/blitz128/blitzc, NODE=<node binary>, RUNTIME=original|improved,
+#  FASTMATH=auto|on|off; the improved 2026 runtime is only available there).
 set -e
 MODE=${1:-blitz}; LEVEL=${2:-1}; GFX=${3:-bitmap}
 ROOT=$(cd "$(dirname "$0")/.." && pwd); T=$ROOT/tools; P=$ROOT/proto; O=$P/out
@@ -15,7 +18,13 @@ if [ $MODE = interp ]; then
     python3 -I $T/bastok.py $W/mdgame.bas $W/mdgame
 else
     python3 -I $T/bastok.py $P/${GAME:-mdgame}.bas $W/src.prg
-    $T/blitzcomp.sh $W/src.prg $W/blitz >/dev/null
+    if [ -n "$BLITZC" ]; then
+        ${NODE:-node} $BLITZC/js/cli.js $W/src.prg $W/blitz --runtime ${RUNTIME:-original} \
+            --fastmath ${FASTMATH:-auto} > $W/jsc.txt 2>&1 || { cat $W/jsc.txt; exit 2; }
+        tail -1 $W/jsc.txt
+    else
+        $T/blitzcomp.sh $W/src.prg $W/blitz >/dev/null
+    fi
     grep -q "errors: 0" $W/blitz/screen.txt || { cat $W/blitz/screen.txt; exit 2; }
     cp $W/blitz/c.prg $W/mdgame; cp $W/blitz/screen.txt $O/blitz-compile.txt
 fi
