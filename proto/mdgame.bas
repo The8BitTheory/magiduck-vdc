@@ -20,7 +20,7 @@
 51 for j=0 to 1:a=fl%+j*128:for k=0 to 1:poke a,3:poke a+5,sw%:poke a+6,0:poke a+8,0:poke a+9,sw%:poke a+10,0:poke a+11,rs%:poke a+12,0:a=a+13:next
 52 for k=0 to 4:poke a,1:for i=1 to 6:poke a+i,0:next:of%(j*5+k)=-1:sq%(j*5+k)=-1:a=a+7:next
 53 w=p0%:if j then w=p1%
-54 for i=0 to 11:poke a+i,0:next:poke a,13:poke a+1,2:poke a+3,20:poke a+5,int(w/256):poke a+7,21:poke a+9,w and 255
+54 for i=0 to 11:poke a+i,0:next:poke a,13:poke a+1,2:poke a+2,1:poke a+3,20:poke a+5,int(w/256):poke a+7,21:poke a+9,w and 255
 55 a=fl%+j*128:poke a+3,w and 255:poke a+4,int(w/256):wx%(j)=-1:next
 56 bank 15
 60 pg%=1:bp%=p1%:fb%=fl%+128:gosub 700:t0%=int(cy%/8):for k=t0% to t0%+7:rw%=k:gosub 800:next

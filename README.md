@@ -18,7 +18,8 @@ Playable disk: `proto/magiduck-demo.d81` (C128, 80 columns, 64 KiB VRAM): `RUN"M
 
 Measured in VICE (level 1, duck + 4 enemies, automatic input, 300 frames): 7.1 fps with the original
 Blitz! runtime, 7.8 fps with the Improved 2026 runtime (blitz-compiler, branch `perf`), 8.3 fps with the
-page flip inside the VCL list instead of a separate `::SYN`. The demo disk uses the improved runtime with fast math (FASTMATH=auto turns it on for this program).
+page flip inside the VCL list instead of a separate `::SYN`, 8.5 fps with that SYN entry waiting
+level-triggered (high byte of n = 1: no wait if the border has already begun). The demo disk uses the improved runtime with fast math (FASTMATH=auto turns it on for this program).
 
 ## Files
 
