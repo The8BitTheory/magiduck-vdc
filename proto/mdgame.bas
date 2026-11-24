@@ -16,12 +16,13 @@
 39 for i=0 to n%-1
 40 if ey%(i)<639 and m%(yt%(ey%(i))+xt%(ex%(i)))<30 then ey%(i)=ey%(i)+1:goto 40
 41 next
-50 rem --- per page: 2 window copies (type 3), 5 sprites (type 12, off = type 1 count 0)
+50 rem --- per page: 2 window copies (type 3), 5 sprites (type 12, off = type 1 count 0), syn + page flip (type 13)
 51 for j=0 to 1:a=fl%+j*128:for k=0 to 1:poke a,3:poke a+5,sw%:poke a+6,0:poke a+8,0:poke a+9,sw%:poke a+10,0:poke a+11,rs%:poke a+12,0:a=a+13:next
-52 for k=0 to 4:poke a,1:for i=1 to 6:poke a+i,0:next:of%(j*5+k)=-1:sq%(j*5+k)=-1:a=a+7:next:poke a,0
+52 for k=0 to 4:poke a,1:for i=1 to 6:poke a+i,0:next:of%(j*5+k)=-1:sq%(j*5+k)=-1:a=a+7:next
 53 w=p0%:if j then w=p1%
-54 a=fl%+j*128:poke a+3,w and 255:poke a+4,int(w/256):wx%(j)=-1:next
-55 bank 15
+54 for i=0 to 11:poke a+i,0:next:poke a,13:poke a+1,2:poke a+3,20:poke a+5,int(w/256):poke a+7,21:poke a+9,w and 255
+55 a=fl%+j*128:poke a+3,w and 255:poke a+4,int(w/256):wx%(j)=-1:next
+56 bank 15
 60 pg%=1:bp%=p1%:fb%=fl%+128:gosub 700:t0%=int(cy%/8):for k=t0% to t0%+7:rw%=k:gosub 800:next
 100 t1=ti
 110 if dm% then gosub 900:else gosub 950
@@ -60,10 +61,8 @@
 300 rem --- sprites: slot 0 duck, 1-4 enemies
 301 f%=pd%*4+pf%:sx%=px%*xs%+fx%(f%)-cx%:sy%=py%+fy%(f%)-cy%:k=0:gosub 600
 303 for k=1 to n%:i=k-1:f%=8+ef%(i)-2*(ed%(i)<0):sx%=ex%(i)*xs%+fx%(f%)-cx%:sy%=ey%(i)+fy%(f%)-cy%:gosub 600:next
-400 rem --- draw the frame, show it at the next vertical blank
+400 rem --- draw the frame, show it at the next vertical blank (syn entry at the end of the list)
 401 ::vcl fb%
-402 bh%=bp%/256:bl%=bp% and 255
-403 ::syn 20,bh%,21,bl%
 404 pg%=1-pg%:if pg% then bp%=p1%:fb%=fl%+128:else bp%=p0%:fb%=fl%
 405 fr%=(fr%+1) and 16383:if dm%=0 or fr%<nf% then 110
 410 t2=ti-t1:r=int(fr%*600/t2):if r>255 then r=255

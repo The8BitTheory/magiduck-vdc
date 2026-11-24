@@ -10,13 +10,15 @@ and compiled with Blitz! 128.
   one attribute byte = 2 pixels, the same layout as the CGA original (80x50 pixels, 16 colours).
   A text mode variant (80x50, one attribute byte per pixel) is still supported by the tools.
 - Level 1 from the original data, tile Ring Buffer in VRAM, Double Buffering with Page Flip,
-  sprites with transparency (VMS), one VCL list per page and frame.
+  sprites with transparency (VMS), one VCL list per page and frame; the list ends with a SYN entry
+  (type 13, VDC-BASIC v2h from 2026-11-24) that shows the page at the vertical blank.
 - Joystick port 2: left/right walk, fire or up jumps. No enemy contact, shooting or HUD yet.
 
 Playable disk: `proto/magiduck-demo.d81` (C128, 80 columns, 64 KiB VRAM): `RUN"MAGIDUCK"`.
 
 Measured in VICE (level 1, duck + 4 enemies, automatic input, 300 frames): 7.1 fps with the original
-Blitz! runtime, 7.8 fps with the Improved 2026 runtime (blitz-compiler, branch `perf`). The demo disk uses the improved runtime with fast math (FASTMATH=auto turns it on for this program).
+Blitz! runtime, 7.8 fps with the Improved 2026 runtime (blitz-compiler, branch `perf`), 8.3 fps with the
+page flip inside the VCL list instead of a separate `::SYN`. The demo disk uses the improved runtime with fast math (FASTMATH=auto turns it on for this program).
 
 ## Files
 
